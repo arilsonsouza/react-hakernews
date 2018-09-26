@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import Button from '../button';
 
 const isSearched = (searchTerm) => (item) =>
   !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -19,12 +19,9 @@ class Table extends Component{
                             <span>{ item.num_comments }</span>
                             <span>{ item.points }</span>
                             <span>
-                            <button 
-                                onClick={() => onDismiss(item.objectID)}
-                                type="button"
-                            >
-                                Dispensar
-                            </button>
+                                <Button onClick={() => onDismiss(item.objectID)}>
+                                    Dispensar
+                                </Button>
                             </span>
                         </div>
                     ))
