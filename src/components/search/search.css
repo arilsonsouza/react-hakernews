@@ -1,0 +1,12 @@
+input {
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    margin-right: 10px;
+    border: 1px solid #dddddd;
+}
+
+label{
+    margin-right: 1rem;
+    font-weight: 700;
+}
