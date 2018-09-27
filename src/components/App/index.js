@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loading from '../Loading';
+import { sortBy } from 'lodash';
 import Button from '../Button';
 import Search from '../Search';
 import Table from '../Table';
@@ -17,6 +18,14 @@ import {
   PARAM_HPP,
 } from '../../constants';
 
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, 'title'),
+  AUTHOR: list => sortBy(list, 'author'),
+  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
+  POINTS: list => sortBy(list, 'points').reverse(),
+};
+
 const withLoading = (Component) => ({ isLoading, ...rest }) =>
   isLoading ? <Loading/> : <Component {...rest}/>
 
@@ -32,6 +41,8 @@ class App extends Component {
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
       isLoading: false,
+      sortKey: 'NONE',
+      isSortReverse: false,
     }
   }
 
@@ -78,6 +89,12 @@ class App extends Component {
     event.preventDefault();
   }
 
+  onSort = (sortKey) => {
+    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
+
+    this.setState({ sortKey, isSortReverse })
+  };
+
   componentDidMount(){
     const { searchTerm } = this.state;
     this.setState({ searchKey: searchTerm })
@@ -103,7 +120,7 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, results, searchKey, isLoading } = this.state;
+    const { searchTerm, results, searchKey, isLoading, sortKey, isSortReverse } = this.state;
     const page = (results &&
                   results[searchKey] &&
                   results[searchKey].page) || 0;
@@ -127,6 +144,10 @@ class App extends Component {
 
           <Table 
             list={ list }
+            sortKey={ sortKey }
+            isSortReverse={ isSortReverse }
+            onSort={ this.onSort }
+            SORTS={SORTS}
             onDismiss={ this.onDismiss }
           />
           

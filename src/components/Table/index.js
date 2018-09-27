@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Button';
+import Sort from '../Sort';
 import './index.css';
 
 const isSearched = (searchTerm) => (item) =>
@@ -18,10 +19,58 @@ const smallColumn = {
     width:  '10%'
 };
 
-const Table = ({ list, onDismiss }) => 
+const Table = ({ list, sortKey, onSort, SORTS, isSortReverse, onDismiss }) => {
+    const sortedList = SORTS[sortKey](list);
+    const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
+    return (
         <div className="table">
+            <div className="table-header">
+                <span style={{ width: '40%' }}>
+                    <Sort 
+                        sortKey={'TITLE'}
+                        onSort={onSort}    
+                        activeSortKey={sortKey}
+                    >
+                        Titúlo
+                    </Sort>
+                </span>
+
+                <span style={{ width: '30%' }}>
+                    <Sort 
+                        sortKey={'AUTHOR'}
+                        onSort={onSort}
+                        activeSortKey={sortKey}    
+                    >
+                        Autor
+                    </Sort>
+                </span>
+
+                <span style={{ width: '10%' }}>
+                    <Sort 
+                        sortKey={'COMMENTS'}
+                        onSort={onSort}
+                        activeSortKey={sortKey}    
+                    >
+                        Comentários
+                    </Sort>
+                </span>
+
+                <span style={{ width: '10%' }}>
+                    <Sort 
+                        sortKey={'POINTS'}
+                        onSort={onSort}
+                        activeSortKey={sortKey}    
+                    >
+                        Pontos
+                    </Sort>
+                </span>
+
+                <span style={{ width: '10%' }}>
+                    Arquivo
+                </span>
+            </div>
             {
-                list.map((item => 
+                reverseSortedList.map((item => 
                     <div key={ item.objectID } className="table-row">
                         <span style={ largeColumn }>
                             <a href={ item.url }>{ item.title }</a>
@@ -46,7 +95,8 @@ const Table = ({ list, onDismiss }) =>
                 ))
             }
         </div>
-
+    );
+};
 Table.propTypes = {
     list: PropTypes.array.isRequired,
     onDismiss: PropTypes.func.isRequired
