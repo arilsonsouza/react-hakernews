@@ -17,6 +17,11 @@ import {
   PARAM_HPP,
 } from '../../constants';
 
+const withLoading = (Component) => ({ isLoading, ...rest }) =>
+  isLoading ? <Loading/> : <Component {...rest}/>
+
+const ButtonWithLoading = withLoading(Button);
+
 class App extends Component {
 
   constructor(props){
@@ -127,13 +132,12 @@ class App extends Component {
           
 
         <div className="interactions">
-          { isLoading
-            ? <Loading/>
-            : <Button 
-                onClick={ () => this.fetchSearchTopstories(searchTerm, page+1) }>
-                  Mais
-              </Button>
-          }
+          <ButtonWithLoading
+            isLoading={isLoading}
+            onClick={ () => this.fetchSearchTopstories(searchTerm, page+1) }
+          >
+            Mais
+          </ButtonWithLoading>
         </div>
       </div>
     );
