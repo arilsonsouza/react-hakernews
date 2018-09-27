@@ -1,6 +1,7 @@
 import React from 'react';
-import Button from '../button';
-import './table.css';
+import PropTypes from 'prop-types';
+import Button from '../Button';
+import './index.css';
 
 const isSearched = (searchTerm) => (item) =>
   !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -17,8 +18,7 @@ const smallColumn = {
     width:  '10%'
 };
 
-const Table = ({ list, onDismiss }) => {
-    return (
+const Table = ({ list, onDismiss }) => 
         <div className="table">
             {
                 list.map((item => 
@@ -46,7 +46,10 @@ const Table = ({ list, onDismiss }) => {
                 ))
             }
         </div>
-    );
-}
+
+Table.propTypes = {
+    list: PropTypes.array.isRequired,
+    onDismiss: PropTypes.func.isRequired
+};
 
 export default Table;
