@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Loading from '../Loading';
-import { sortBy } from 'lodash';
 import Button from '../Button';
 import Search from '../Search';
 import Table from '../Table';
@@ -17,14 +16,6 @@ import {
   PARAM_PAGE,
   PARAM_HPP,
 } from '../../constants';
-
-const SORTS = {
-  NONE: list => list,
-  TITLE: list => sortBy(list, 'title'),
-  AUTHOR: list => sortBy(list, 'author'),
-  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
-  POINTS: list => sortBy(list, 'points').reverse(),
-};
 
 const withLoading = (Component) => ({ isLoading, ...rest }) =>
   isLoading ? <Loading/> : <Component {...rest}/>
@@ -89,12 +80,6 @@ class App extends Component {
     event.preventDefault();
   }
 
-  onSort = (sortKey) => {
-    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
-
-    this.setState({ sortKey, isSortReverse })
-  };
-
   componentDidMount(){
     const { searchTerm } = this.state;
     this.setState({ searchKey: searchTerm })
@@ -144,10 +129,6 @@ class App extends Component {
 
           <Table 
             list={ list }
-            sortKey={ sortKey }
-            isSortReverse={ isSortReverse }
-            onSort={ this.onSort }
-            SORTS={SORTS}
             onDismiss={ this.onDismiss }
           />
           
